@@ -21,7 +21,7 @@ from pyproj import Transformer
 # Project imports
 from owimetadatabase_soilapi.io import API
 
-SOIL_URL_PREFIX = "https://https://owimetadatabase.owilab.be/api/v1/soildata"
+SOIL_URL_PREFIX = "https://owimetadatabase.owilab.be/api/v1/soildata"
 
 
 class SoilAPI(API):

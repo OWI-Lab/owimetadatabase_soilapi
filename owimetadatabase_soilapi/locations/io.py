@@ -14,7 +14,7 @@ import plotly.express as px
 from owimetadatabase_soilapi.io import API
 
 
-LOCATION_URL_PREFIX = "https://https://owimetadatabase.owilab.be/api/v1/locations"
+LOCATION_URL_PREFIX = "https://owimetadatabase.owilab.be/api/v1/locations"
 
 
 class LocationsAPI(API):
