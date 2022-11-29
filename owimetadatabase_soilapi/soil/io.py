@@ -388,6 +388,32 @@ class SoilAPI(API):
             **kwargs
         )
 
+    def get_testlocations_profile(self, lat1, lon1, lat2, lon2, band=1000):
+        """
+        Retrieves test locations along a profile line
+        :param lat1: Latitude of the start point
+        :param lon1: Longitude of the start point
+        :param lat2: Latitude of the end point
+        :param lon2: Longitude of the end point
+        :param band: Thickness of the band (in m, default=1000m)
+        :return: Returns a dataframe with the summary data of the selected in-situ tests
+        """
+        resp = requests.get(
+            url='%s/testlocationprofile/' % self.api_root,
+            headers=self.header,
+            params={
+                'lat1': lat1,
+                'lon1': lon1,
+                'lat2': lat2,
+                'lon2': lon2,
+                'offset': band
+            })
+        try:
+            return pd.DataFrame(json.loads(resp.text))
+        except:
+            warnings.warn("Response could not be loaded. This is most likely because no data was returned")
+            return pd.DataFrame()
+
     def get_testlocations(self, projectsite=None, campaign=None, location=None, **kwargs):
         """
         Get the geotechnical test locations corresponding to the given search criteria
@@ -992,7 +1018,7 @@ class SoilAPI(API):
         )
 
     def get_soilprofile_detail(self, projectsite=None, location=None, soilprofile=None, convert_to_profile=True,
-                               profile_title=None, drop_info_cols=True, **kwargs):
+                               profile_title=None, drop_info_cols=False, **kwargs):
         """
         Retrieves a soil profile from the database and converts it to a groundhog SoilProfile object
 
@@ -1001,7 +1027,7 @@ class SoilAPI(API):
         :param soilprofile: Title of the soil profile (e.g. "Borehole log")
         :param designiteration: Name of the design iteration (e.g. "FEED design")
         :param convert_to_profile: Boolean determining whether the soil profile needs to be converted to a groundhog SoilProfile object
-        :param drop_info_cols: Boolean determining whether or not to drop the columns with additional info (e.g. soil description, ...)
+        :param drop_info_cols: Boolean determining whether or not to drop the columns with additional info (e.g. soil description, ...). Default=False
         :return: Dictionary with the following keys:
             - 'id': id for the selected soil profile
             - 'soilprofilesummary': Metadata for the soil profile
@@ -1311,7 +1337,7 @@ class SoilAPI(API):
             'exists': exists
         }
 
-    def get_batchlabtesttypess(self, testtype=None, **kwargs):
+    def get_batchlabtesttypes(self, testtype=None, **kwargs):
         """
         Retrieve batch lab test types corresponding to the specified search criteria.
 
@@ -1475,9 +1501,9 @@ class SoilAPI(API):
             params=url_params)
         
         try:
-            warnings.warn("Response could not be loaded. This is most likely because no data was returned")
             df_resp_detail = pd.DataFrame(json.loads(resp_detail.text))
         except:
+            warnings.warn("Response could not be loaded. This is most likely because no data was returned")
             df_resp_detail = pd.DataFrame()
 
         id = df_resp_detail['id'].iloc[0]
