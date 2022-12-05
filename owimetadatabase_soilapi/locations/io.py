@@ -24,15 +24,17 @@ class LocationsAPI(API):
     A number of methods are provided to query the database via the database API.
     In the majority of cases, the methods return a dataframe based on the URL parameters provided.
     The methods are written such that a number of mandatory URL parameters are required (see documentation of the methods).
-    The URL parameters can be expanded with Django-style additional filtering arguments (e.g. ``location__title__icontains="BB"``) as optional keyword arguments. Knowledge of the Django models is required for this (see ``geotechdatabase`` code).
+    The URL parameters can be expanded with Django-style additional filtering arguments (e.g. ``location__title__icontains="BB"``) as optional keyword arguments. Knowledge of the Django models is required for this.
     """
 
     @staticmethod
     def urlparameters(parameters, parameternames):
         """
         Returns a dictionary with URL parameters based on lists of parameters and parameter names
+
         :param parameters: List with parameters
         :param parameternames: List with parameter names
+
         :return: Dictionary with the URL parameters
         """
         url_params = {}
@@ -46,7 +48,9 @@ class LocationsAPI(API):
     def get_projectsites(self, **kwargs):
         """
         Get all available projects
+
         :return:  Dictionary with the following keys:
+
             - 'data': Pandas dataframe with the location data for each project
             - 'exists': Boolean indicating whether matching records are found
         """
@@ -80,6 +84,7 @@ class LocationsAPI(API):
 
         :param projectsite: Title of the projectsite
         :return:  Dictionary with the following keys:
+
             - 'id': id of the selected project site
             - 'data': Pandas dataframe with the location data for each projectsite
             - 'exists': Boolean indicating whether matching records are found
@@ -153,9 +158,11 @@ class LocationsAPI(API):
     def get_assetlocations(self, projectsite=None, assetlocation=None, **kwargs):
         """
         Get all available asset locations, specify a projectsite or filter by projectsite
+
         :param projectsite: String with the projectsite title (e.g. "HKN")
         :param assetlocation: String with the asset location title (e.g. "HKNA01")
         :return: Dictionary with the following keys:
+
             - 'data': Pandas dataframe with the location data for each location in the projectsite
             - 'exists': Boolean indicating whether matching records are found
         """
@@ -189,9 +196,12 @@ class LocationsAPI(API):
     def get_assetlocation_detail(self, projectsite, assetlocation, **kwargs):
         """
         Get a selected turbine
+
         :param projectsite: Name of the projectsite (e.g. "HKN")
         :param assetlocation: Title of the asset location (e.g. "HKN-A01")
+        
         :return: Dictionary with the following keys:
+
             - 'id': id of the selected projectsite site
             - 'data': Pandas dataframe with the location data for the individual location
             - 'exists': Boolean indicating whether a matching location is found
@@ -265,8 +275,10 @@ class LocationsAPI(API):
     def plot_assetlocations(self, return_fig=False, **kwargs):
         """
         Retrieves asset locations and generates a Plotly plot to show them
+
         :param return_fig: Boolean indicating whether the Plotly figure object needs to be returned (default is False which simply shows the plot)
         :param kwargs: Keyword arguments for the search (see ``get_assetlocations``)
+
         :return: Plotly figure object with selected asset locations plotted on OpenStreetMap tiles (if requested)
         """
         assetlocations = self.get_assetlocations(**kwargs)['data']

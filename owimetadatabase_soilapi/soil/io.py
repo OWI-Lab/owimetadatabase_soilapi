@@ -31,15 +31,17 @@ class SoilAPI(API):
     A number of methods are provided to query the database via the database API.
     In the majority of cases, the methods return a dataframe based on the URL parameters provided.
     The methods are written such that a number of mandatory URL parameters are required (see documentation of the methods).
-    The URL parameters can be expanded with Django-style additional filtering arguments (e.g. ``location__title__icontains="BB"``) as optional keyword arguments. Knowledge of the Django models is required for this (see ``geotechdatabase`` code).
+    The URL parameters can be expanded with Django-style additional filtering arguments (e.g. ``location__title__icontains="BB"``) as optional keyword arguments. Knowledge of the Django models is required for this.
     """
 
     @staticmethod
     def urlparameters(parameters, parameternames):
         """
         Returns a dictionary with URL parameters based on lists of parameters and parameter names
+        
         :param parameters: List with parameters
         :param parameternames: List with parameter names
+        
         :return: Dictionary with the URL parameters
         """
         url_params = {}
@@ -52,11 +54,13 @@ class SoilAPI(API):
     def get_proximity_entities_2d(self, api_url, latitude, longitude, radius, **kwargs):
         """
         Find the entities in a certain radius around a point in 2D (cylindrical search area)
+        
         :param api_url: URL of the endpoint
         :param latitude: Latitude of the central point in decimal format
         :param longitude: Longitude of the central point in decimal format
         :param radius: Initial search radius around the central point in km
         :param kwargs: Optional keyword arguments for the search
+        
         :return:
         """
         geosearch_params = dict(
@@ -90,13 +94,16 @@ class SoilAPI(API):
     def get_closest_entity_2d(self, api_url, latitude, longitude, initialradius=1, target_srid='25831', **kwargs):
         """
         Get the entity closest to a certain point in 2D with optional query arguments (cylindrical search area)
+        
         :param api_url: End-point for the API
         :param latitude: Latitude of the central point in decimal format
         :param longitude: Longitude of the central point in decimal format
         :param initialradius: Initial search radius around the central point in km, the search radius is increased until locations are found
         :param target_srid: SRID for the offset calculation in meters
-        :param **kwargs: Optional keyword arguments e.g. ``campaign__projectsite__title__icontains='HKN'``
+        :param kwargs: Optional keyword arguments e.g. ``campaign__projectsite__title__icontains='HKN'``
+        
         :return: Dictionary with the following keys:
+        
             - 'data': Pandas dataframe with the test location data for each location in the specified search area
             - 'id': ID of the closest test location
             - 'title': Title of the closest test location
@@ -160,6 +167,7 @@ class SoilAPI(API):
                               sampletest=True, **kwargs):
         """
         Get the entity closest to a certain point in 3D (spherical search area) with optional query arguments
+        
         :param api_url: End-point for the API
         :param latitude: Latitude of the central point in decimal format
         :param longitude: Longitude of the central point in decimal format
@@ -167,8 +175,10 @@ class SoilAPI(API):
         :param initialradius: Initial search radius around the central point in km, the search radius is increased until locations are found
         :param target_srid: SRID for the offset calculation in meters
         :param sampletest: Boolean indicating whether a sample or sample test needs to be retrieved (default is True to search for sample tests)
-        :param **kwargs: Optional keyword arguments e.g. ``campaign__projectsite__title__icontains='HKN'``
+        :param kwargs: Optional keyword arguments e.g. ``campaign__projectsite__title__icontains='HKN'``
+        
         :return: Dictionary with the following keys:
+        
             - 'data': Pandas dataframe with the test location data for each location in the specified search area
             - 'id': ID of the closest test location
             - 'title': Title of the closest test location
@@ -236,8 +246,11 @@ class SoilAPI(API):
     def get_surveycampaigns(self, projectsite=None, **kwargs):
         """
         Get all available survey campaigns, specify a projectsite to filter by projectsite
+        
         :param projectsite: String with the projectsite title (e.g. "HKN")
+        
         :return: Dictionary with the following keys:
+        
             - 'data': Pandas dataframe with the location data for each location in the projectsite
             - 'exists': Boolean indicating whether matching records are found
         """
@@ -272,9 +285,12 @@ class SoilAPI(API):
     def get_surveycampaign_detail(self, projectsite=None, campaign=None, **kwargs):
         """
         Get a selected survey campaign
+        
         :param projectsite: Name of the projectsite (e.g. "HKN")
         :param campaign: Title of the survey campaign (e.g. "Borehole campaign")
+        
         :return: Dictionary with the following keys:
+        
             - 'id': id of the selected projectsite site
             - 'data': Pandas dataframe with the location data for the individual location
             - 'exists': Boolean indicating whether a matching location is found
@@ -351,10 +367,13 @@ class SoilAPI(API):
     def get_proximity_testlocations(self, latitude, longitude, radius, **kwargs):
         """
         Get all soil test locations in a certain radius surrounding a point with given lat/lon
+        
         :param latitude: Latitude of the central point in decimal format
         :param longitude: Longitude of the central point in decimal format
         :param radius: Radius around the central point in km
+        
         :return: Dictionary with the following keys:
+        
             - 'data': Pandas dataframe with the test location data for each location in the specified search area
             - 'exists': Boolean indicating whether matching records are found
         """
@@ -368,12 +387,15 @@ class SoilAPI(API):
     def get_closest_testlocation(self, latitude, longitude, initialradius=1, target_srid='25831', **kwargs):
         """
         Get the soil test location closest to a certain point with the name containing a certain string
+        
         :param latitude: Latitude of the central point in decimal format
         :param longitude: Longitude of the central point in decimal format
         :param initialradius: Initial search radius around the central point in km, the search radius is increased until locations are found
         :param target_srid: SRID for the offset calculation in meters
-        :param **kwargs: Optional keyword arguments e.g. ``campaign__projectsite__title__icontains='HKN'``
+        :param kwargs: Optional keyword arguments e.g. ``campaign__projectsite__title__icontains='HKN'``
+        
         :return: Dictionary with the following keys:
+        
             - 'data': Pandas dataframe with the test location data for each location in the specified search area
             - 'id': ID of the closest test location
             - 'title': Title of the closest test location
@@ -391,11 +413,13 @@ class SoilAPI(API):
     def get_testlocations_profile(self, lat1, lon1, lat2, lon2, band=1000):
         """
         Retrieves test locations along a profile line
+        
         :param lat1: Latitude of the start point
         :param lon1: Longitude of the start point
         :param lat2: Latitude of the end point
         :param lon2: Longitude of the end point
         :param band: Thickness of the band (in m, default=1000m)
+        
         :return: Returns a dataframe with the summary data of the selected in-situ tests
         """
         resp = requests.get(
@@ -417,10 +441,13 @@ class SoilAPI(API):
     def get_testlocations(self, projectsite=None, campaign=None, location=None, **kwargs):
         """
         Get the geotechnical test locations corresponding to the given search criteria
+        
         :param projectsite: Name of the projectsite under consideration (e.g. "HKN")
         :param campaign: Name of the survey campaign (optional, default is None to return all locations in a projectsite)
         :param location: Name of a specific location (optional, default is None to return all locations in a projectsite)
+        
         :return: Dictionary with the following keys:
+        
             - 'data': Pandas dataframe with the test location data for each location meeting the specified search criteria
             - 'exists': Boolean indicating whether matching records are found
         """
@@ -451,10 +478,13 @@ class SoilAPI(API):
     def get_testlocation_detail(self, projectsite=None, location=None, campaign=None, **kwargs):
         """
         Get the detailed information for a geotechnical test location
+        
         :param projectsite: Name of the projectsite under consideration (e.g. "HKN")
         :param campaign: Name of the survey campaign (optional, default is None to return all locations in a projectsite)
         :param location: Name of a specific location (optional, default is None to return all locations in a projectsite)
+        
         :return: Dictionary with the following keys:
+        
             - 'id': id of the selected test location
             - 'data': Pandas dataframe with the test location data for each location meeting the specified search criteria
             - 'exists': Boolean indicating whether matching records are found
@@ -527,8 +557,10 @@ class SoilAPI(API):
     def plot_testlocations(self, return_fig=False, **kwargs):
         """
         Retrieves soil test locations and generates a Plotly plot to show them
+        
         :param return_fig: Boolean indicating whether the Plotly figure object needs to be returned (default is False which simply shows the plot)
         :param kwargs: Keyword arguments for the search (see ``get_testlocations``)
+        
         :return: Plotly figure object with selected asset locations plotted on OpenStreetMap tiles (if requested)
         """
         testlocations = self.get_testlocations(**kwargs)['data']
@@ -545,12 +577,14 @@ class SoilAPI(API):
     def get_insitutests(self, projectsite=None, location=None, testtype=None, insitutest=None, **kwargs):
         """
         Get the detailed information (measurement data) for an in-situ test of give type
+        
         :param projectsite: Name of the projectsite (e.g. "HKN")
         :param location: Name of the test location (e.g. "HKN75-SCPT-A")
         :param testtype: Name of the test type (e.g. "S-PCPT")
         :param insitutest: Name of the in-situ test
 
         :return: Dictionary with the following keys:
+        
             - 'data': Metadata of the insitu tests
             - 'exists': Boolean indicating whether a matching in-situ test is found
         """
@@ -585,10 +619,13 @@ class SoilAPI(API):
     def get_proximity_insitutests(self, latitude, longitude, radius, **kwargs):
         """
         Get all in-situ tests in a certain radius surrounding a point with given lat/lon
+        
         :param latitude: Latitude of the central point in decimal format
         :param longitude: Longitude of the central point in decimal format
         :param radius: Radius around the central point in km
+        
         :return: Dictionary with the following keys:
+        
             - 'data': Pandas dataframe with the in-situ test summary data for each in-situ test in the specified search area
             - 'exists': Boolean indicating whether matching records are found
         """
@@ -602,12 +639,15 @@ class SoilAPI(API):
     def get_closest_insitutest(self, latitude, longitude, initialradius=1, target_srid='25831', **kwargs):
         """
         Get the in-situ test closest to a certain point with the name containing a certain string
+        
         :param latitude: Latitude of the central point in decimal format
         :param longitude: Longitude of the central point in decimal format
         :param initialradius: Initial search radius around the central point in km, the search radius is increased until locations are found
         :param target_srid: SRID for the offset calculation in meters
-        :param **kwargs: Optional keyword arguments e.g. ``campaign__projectsite__title__icontains='HKN'``
+        :param kwargs: Optional keyword arguments e.g. ``campaign__projectsite__title__icontains='HKN'``
+        
         :return: Dictionary with the following keys:
+        
             - 'data': Pandas dataframe with the in-situ test data for each in-situ test in the specified search area
             - 'id': ID of the closest in-situ test
             - 'title': Title of the closest in-situ test
@@ -627,6 +667,7 @@ class SoilAPI(API):
         Find all in-situ test types corresponding to the search parameters
         
         :return: Dictionary with the following keys:
+        
             - 'data': Dataframe with the in-situ test types returned from the query
             - 'exists': Boolean containing whether data is in the returned query
         """
@@ -698,6 +739,7 @@ class SoilAPI(API):
                               combine=False, **kwargs):
         """
         Get the detailed information (measurement data) for an in-situ test of give type
+        
         :param projectsite: Name of the projectsite (e.g. "HKN")
         :param location: Name of the test location (e.g. "HKN75-SCPT-A")
         :param testtype: Name of the test type (e.g. "PCPT")
@@ -706,6 +748,7 @@ class SoilAPI(API):
         :param kwargs: Optional keyword arguments for further queryset filtering based on model attributes.
 
         :return: Dictionary with the following keys:
+        
             - 'id': id of the selected test
             - 'insitutestsummary': Metadata of the insitu tests
             - 'rawdata': Raw data
@@ -798,6 +841,7 @@ class SoilAPI(API):
                               **kwargs):
         """
         Get the detailed information (measurement data) for an in-situ test of CPT type (seabed or downhole CPT)
+        
         :param projectsite: Name of the projectsite (e.g. "HKN")
         :param location: Name of the test location (e.g. "HKN75-SCPT-A")
         :param testtype: Name of the test type (e.g. "PCPT")
@@ -807,6 +851,7 @@ class SoilAPI(API):
         :param kwargs: Optional keyword arguments for the cpt data loading. Note that further queryset filtering based on model attributes is not possible with this method. The in-situ test needs to be fully defined by the required arguments.
 
         :return: Dictionary with the following keys:
+        
             - 'id': id of the selected test
             - 'insitutestsummary': Metadata of the insitu tests
             - 'rawdata': Raw data
@@ -947,6 +992,7 @@ class SoilAPI(API):
         :param soilprofile: Title of the soil profile (e.g. "Borehole log")
 
         :return: Dictionary with the following keys:
+        
             - 'data': Metadata for the soil profiles
             - 'exists': Boolean indicating whether a matching in-situ test is found
         """
@@ -980,10 +1026,13 @@ class SoilAPI(API):
     def get_proximity_soilprofiles(self, latitude, longitude, radius, **kwargs):
         """
         Get all soil profiles in a certain radius surrounding a point with given lat/lon
+        
         :param latitude: Latitude of the central point in decimal format
         :param longitude: Longitude of the central point in decimal format
         :param radius: Radius around the central point in km
+        
         :return: Dictionary with the following keys:
+        
             - 'data': Pandas dataframe with the soil profile summary data for each soil profile in the specified search area
             - 'exists': Boolean indicating whether matching records are found
         """
@@ -997,12 +1046,15 @@ class SoilAPI(API):
     def get_closest_soilprofile(self, latitude, longitude, initialradius=1, target_srid='25831', **kwargs):
         """
         Get the soil profile closest to a certain point with additional conditions as optional keyword arguments
+        
         :param latitude: Latitude of the central point in decimal format
         :param longitude: Longitude of the central point in decimal format
         :param initialradius: Initial search radius around the central point in km, the search radius is increased until locations are found
         :param target_srid: SRID for the offset calculation in meters
-        :param **kwargs: Optional keyword arguments e.g. ``location__title__icontains='HKN'``
+        :param kwargs: Optional keyword arguments e.g. ``location__title__icontains='HKN'``
+        
         :return: Dictionary with the following keys:
+        
             - 'data': Pandas dataframe with the soil profile data for each soil profile in the specified search area
             - 'id': ID of the closest in-situ test
             - 'title': Title of the closest in-situ test
@@ -1028,7 +1080,9 @@ class SoilAPI(API):
         :param designiteration: Name of the design iteration (e.g. "FEED design")
         :param convert_to_profile: Boolean determining whether the soil profile needs to be converted to a groundhog SoilProfile object
         :param drop_info_cols: Boolean determining whether or not to drop the columns with additional info (e.g. soil description, ...). Default=False
+        
         :return: Dictionary with the following keys:
+        
             - 'id': id for the selected soil profile
             - 'soilprofilesummary': Metadata for the soil profile
             - 'response': Response text
@@ -1161,6 +1215,7 @@ class SoilAPI(API):
         Check if a soiltype with a given name exists
 
         :param soiltype: Name of the soil type
+        
         :return: id of the soil type if it exists, False otherwise
         """
         url_params = self.urlparameters(
@@ -1195,6 +1250,7 @@ class SoilAPI(API):
         Find all soil types corresponding to the search parameters
         
         :return: Dictionary with the following keys:
+        
             - 'data': Dataframe with the soil units returned from the query
             - 'exists': Boolean containing whether data is in the returned query
         """
@@ -1226,9 +1282,11 @@ class SoilAPI(API):
     def soilunit_exists(self, projectsite=None, soiltype=None, soilunit=None, **kwargs):
         """
         Check if a certain soil unit exists
+        
         :param projectsite: Name of the project site
         :param soiltype: Name of the soil type
         :param soilunit: Name of the soil unit
+        
         :return: id of the soil unit if it exists, False otherwise
         """
         url_params = self.urlparameters(
@@ -1261,10 +1319,13 @@ class SoilAPI(API):
     def get_soilunits(self, projectsite=None, soiltype=None, soilunit=None, **kwargs):
         """
         Find all soil units corresponding to the search parameters
+        
         :param projectsite: Name of the projectsite (e.g. ``"HKN"``)
         :param soiltype: Name of the soil type (e.g. ``"SAND"``)
         :param soilunit: Name of the soil unit (e.g. ``"Asse sand-clay"``)
+        
         :return: Dictionary with the following keys:
+        
             - 'data': Dataframe with the soil units returned from the query
             - 'exists': Boolean containing whether data is in the returned query
         """
@@ -1305,7 +1366,9 @@ class SoilAPI(API):
         :param location: Title of the test location
         :param testtype: Title of the test type
         :param batchlabtest: Title of the batch lab test
+        
         :return: Dictionary with the following keys
+        
             - 'data': Dataframe with details on the batch lab test
             - 'exists': Boolean indicating whether records meeting the specified search criteria exist
         """
@@ -1344,6 +1407,7 @@ class SoilAPI(API):
         :param testtype: Title of the test type
         
         :return: Dictionary with the following keys
+        
             - 'data': Dataframe with details on the batch lab test types
             - 'exists': Boolean indicating whether records meeting the specified search criteria exist
         """
@@ -1413,10 +1477,13 @@ class SoilAPI(API):
     def get_proximity_batchlabtests(self, latitude, longitude, radius, **kwargs):
         """
         Get all batch lab tests in a certain radius surrounding a point with given lat/lon
+        
         :param latitude: Latitude of the central point in decimal format
         :param longitude: Longitude of the central point in decimal format
         :param radius: Radius around the central point in km
+        
         :return: Dictionary with the following keys:
+        
             - 'data': Pandas dataframe with the batch lab test summary data for each batch lab test in the specified search area
             - 'exists': Boolean indicating whether matching records are found
         """
@@ -1430,12 +1497,15 @@ class SoilAPI(API):
     def get_closest_batchlabtest(self, latitude, longitude, initialradius=1, target_srid='25831', **kwargs):
         """
         Get the batch lab test closest to a certain point with the name containing a certain string
+        
         :param latitude: Latitude of the central point in decimal format
         :param longitude: Longitude of the central point in decimal format
         :param initialradius: Initial search radius around the central point in km, the search radius is increased until locations are found
         :param target_srid: SRID for the offset calculation in meters
-        :param **kwargs: Optional keyword arguments e.g. ``location__title__icontains='BH'``
+        :param kwargs: Optional keyword arguments e.g. ``location__title__icontains='BH'``
+        
         :return: Dictionary with the following keys:
+        
             - 'data': Pandas dataframe with the batch lab test data for each batch lab test in the specified search area
             - 'id': ID of the closest batch lab test
             - 'title': Title of the closest batch lab test
@@ -1460,7 +1530,9 @@ class SoilAPI(API):
         :param location: Title of the test location
         :param testtype: Title of the test type
         :param batchlabtest: Title of the batch lab test
+        
         :return: Dictionary with the following keys:
+        
             - 'id': id for the selected soil profile
             - 'summary': Metadata for the batch lab test
             - 'response': Response text
@@ -1588,6 +1660,7 @@ class SoilAPI(API):
         :param sampletype: Title of the sample type
         
         :return: Dictionary with the following keys
+        
             - 'data': Dataframe with details on the sample type
             - 'exists': Boolean indicating whether records meeting the specified search criteria exist
         """
@@ -1658,12 +1731,15 @@ class SoilAPI(API):
                                 **kwargs):
         """
         Retrieve geotechnical samples corresponding to the specified search criteria
+        
         :param projectsite: Project site name (e.g. 'HKN')
         :param campaign: Title of the survey campaign
         :param location: Title of the test location
         :param sampletype: Title of the sample type
         :param sample: Title of the sample
+        
         :return: Dictionary with the following keys
+        
             - 'data': Dataframe with details on the sample
             - 'exists': Boolean indicating whether records meeting the specified search criteria exist
         """
@@ -1698,10 +1774,13 @@ class SoilAPI(API):
     def get_proximity_geotechnicalsamples(self, latitude, longitude, radius, **kwargs):
         """
         Get all geotechnical samples in a certain radius surrounding a point with given lat/lon
+        
         :param latitude: Latitude of the central point in decimal format
         :param longitude: Longitude of the central point in decimal format
         :param radius: Radius around the central point in km
+        
         :return: Dictionary with the following keys:
+        
             - 'data': Pandas dataframe with the geotechnical sample data for each geotechnical sample in the specified search area
             - 'exists': Boolean indicating whether matching records are found
         """
@@ -1715,13 +1794,16 @@ class SoilAPI(API):
     def get_closest_geotechnicalsample(self, latitude, longitude, depth, initialradius=1, target_srid='25831', **kwargs):
         """
         Get the geotechnical sample closest to a certain point with the name containing a certain string
+        
         :param latitude: Latitude of the central point in decimal format
         :param longitude: Longitude of the central point in decimal format
         :param depth: Depth of the central point in meters below seabed
         :param initialradius: Initial search radius around the central point in km, the search radius is increased until locations are found
         :param target_srid: SRID for the offset calculation in meters
-        :param **kwargs: Optional keyword arguments e.g. ``location__title__icontains='BH'``
+        :param kwargs: Optional keyword arguments e.g. ``location__title__icontains='BH'``
+        
         :return: Dictionary with the following keys:
+        
             - 'data': Pandas dataframe with the geotechnical sample data for each geotechnical sample in the specified search area
             - 'id': ID of the closest batch lab test
             - 'title': Title of the closest batch lab test
@@ -1748,7 +1830,9 @@ class SoilAPI(API):
         :param location: Title of the test location
         :param sampletype: Title of the sample type
         :param sample: Title of the sample
+        
         :return: Dictionary with the following keys:
+        
             - 'id': id for the selected soil profile
             - 'data': Metadata for the batch lab test
             - 'response': Response text
@@ -1835,6 +1919,7 @@ class SoilAPI(API):
         :param testtype: Title of the test type
         
         :return: Dictionary with the following keys
+        
             - 'data': Dataframe with details on the sample lab test types
             - 'exists': Boolean indicating whether records meeting the specified search criteria exist
         """
@@ -1879,6 +1964,7 @@ class SoilAPI(API):
         :param sampletest: Title of the sample test
 
         :return: Dictionary with the following keys
+        
             - 'data': Dataframe with details on the lab test
             - 'exists': Boolean indicating whether records meeting the specified search criteria exist
         """
@@ -1913,10 +1999,13 @@ class SoilAPI(API):
     def get_proximity_sampletests(self, latitude, longitude, radius, **kwargs):
         """
         Get all sample tests in a certain radius surrounding a point with given lat/lon
+        
         :param latitude: Latitude of the central point in decimal format
         :param longitude: Longitude of the central point in decimal format
         :param radius: Radius around the central point in km
+        
         :return: Dictionary with the following keys:
+        
             - 'data': Pandas dataframe with the sample test summary data for each sample test in the specified search area
             - 'exists': Boolean indicating whether matching records are found
         """
@@ -1930,13 +2019,16 @@ class SoilAPI(API):
     def get_closest_sampletest(self, latitude, longitude, depth, initialradius=1, target_srid='25831', **kwargs):
         """
         Get the sample test closest to a certain point
+        
         :param latitude: Latitude of the central point in decimal format
         :param longitude: Longitude of the central point in decimal format
         :param Depth: Depth of the central point in meters below seabed
         :param initialradius: Initial search radius around the central point in km, the search radius is increased until locations are found
         :param target_srid: SRID for the offset calculation in meters
-        :param **kwargs: Optional keyword arguments e.g. ``sample__location__title__icontains='BH'``
+        :param kwargs: Optional keyword arguments e.g. ``sample__location__title__icontains='BH'``
+        
         :return: Dictionary with the following keys:
+        
             - 'data': Pandas dataframe with the sample test data for each sample test in the specified search area
             - 'id': ID of the closest sample test
             - 'title': Title of the closest sample test
@@ -2000,6 +2092,7 @@ class SoilAPI(API):
         :param sampletest: Title of the sample test
 
         :return: Dictionary with the following keys:
+        
             - 'id': id for the selected lab test
             - 'summary': Metadata for the lab test
             - 'response': Response text
@@ -2165,6 +2258,7 @@ class SoilAPI(API):
         :param soilunit: Name of the soil unit
         :param depthcol: Name of the column with the depth in the ``rawdata`` field
         :param kwargs: Optional keyword arguments for retrieval of in-situ tests (e.g. ``projectsite`` and ``testtype``)
+        
         :return: Dataframe with in-situ test data in the selected soil unit.
         """
 
@@ -2240,6 +2334,7 @@ class SoilAPI(API):
 
         :param soilunit: Name of the soil unit
         :param kwargs: Optional keyword arguments for retrieval of sample tests (e.g. ``projectsite`` and ``testtype``)
+        
         :return: Dataframe with sample test metadata in the selected soil unit.
         """
         selected_depths = self.get_soilunit_depthranges(soilunit=soilunit)
@@ -2270,11 +2365,13 @@ class SoilAPI(API):
     def get_soilprofile_profile(self, lat1, lon1, lat2, lon2, band=1000):
         """
         Retrieves soil profiles along a profile line
+        
         :param lat1: Latitude of the start point
         :param lon1: Longitude of the start point
         :param lat2: Latitude of the end point
         :param lon2: Longitude of the end point
         :param band: Thickness of the band (in m, default=1000m)
+        
         :return: Returns a dataframe with the summary data of the selected soil profiles
         """
         resp = requests.get(
@@ -2303,6 +2400,7 @@ class SoilAPI(API):
                                **kwargs):
         """
         Creates a fence diagram for soil profiles
+        
         :param soilprofiles_df: Dataframe with summary data for the selected soil profiles
         :param start: Name of the soil profile at the start
         :param end: Name of the soil profile at the end
@@ -2311,6 +2409,7 @@ class SoilAPI(API):
         :param show_annotations: Boolean determining whether annotations are shown (default=True)
         :param general_layout: Dictionary with general layout options (default = dict())
         :param kwargs: Keyword arguments for the get_soilprofiles method
+        
         :return: Plots a fence diagram of the selected soil profiles
         """
 
@@ -2344,11 +2443,13 @@ class SoilAPI(API):
     def get_insitutests_profile(self, lat1, lon1, lat2, lon2, band=1000):
         """
         Retrieves in-situ tests along a profile line
+        
         :param lat1: Latitude of the start point
         :param lon1: Longitude of the start point
         :param lat2: Latitude of the end point
         :param lon2: Longitude of the end point
         :param band: Thickness of the band (in m, default=1000m)
+        
         :return: Returns a dataframe with the summary data of the selected in-situ tests
         """
         resp = requests.get(
@@ -2374,6 +2475,7 @@ class SoilAPI(API):
                        uniformcolor=None, **kwargs):
         """
         Creates a fence diagram for CPTs
+        
         :param cpt_df: Dataframe with the summary data of the selected CPTs
         :param start: Name of the location for the start point
         :param end: Name of the location for the end point
@@ -2384,6 +2486,7 @@ class SoilAPI(API):
         :param general_layout: Dictionary with general layout options (default = dict())
         :param uniformcolor: If a valid color is provided (e.g. 'black'), it is used for all CPT traces
         :param kwargs: Keyword arguments for the get_insitutests method
+        
         :return: Plots a fence diagram of the selected CPT tests
         """
 
@@ -2428,6 +2531,7 @@ class SoilAPI(API):
                        uniformcolor=None, **kwargs):
         """
         Creates a combined fence diagram with soil profile and CPT data:
+        
         :param profiles: List with georeferenced soil profiles (run plot_soilprofile_fence first)
         :param cpts: List with georeference CPTs (run plot_cpt_fence first)
         :param startpoint: Name of the CPT location for the start point
@@ -2440,6 +2544,7 @@ class SoilAPI(API):
         :param fillcolordict: Dictionary with colors for soil types
         :param logwidth: Width of the log in the fence diagram
         :param uniformcolor: If a valid color is provided (e.g. 'black'), it is used for all CPT traces
+        
         :return: Plots a fence diagram of the selected CPT tests and soil profiles
         """
 
