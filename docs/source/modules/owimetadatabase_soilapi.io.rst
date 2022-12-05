@@ -1,10 +1,16 @@
-owimetadatabase API connector
-==============================
+﻿owimetadatabase\_soilapi.io
+===========================
 
 .. automodule:: owimetadatabase_soilapi.io
-   :members:
-   :undoc-members:
-   :show-inheritance:
+
+   
+   
+   
+
+   
+   
+   
+
    
    
    .. rubric:: Classes

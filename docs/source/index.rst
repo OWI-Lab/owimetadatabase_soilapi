@@ -5,12 +5,12 @@ owimetadatabase_soilapi
 
 Modules
 =========
-.. autosummary::
-   :toctree: modules
+.. toctree::
+   :maxdepth: 2
 
-   owimetadatabase_soilapi.io
-   owimetadatabase_soilapi.soil
-   owimetadatabase_soilapi.locations
+   modules/owimetadatabase_soilapi.io
+   modules/owimetadatabase_soilapi.soil
+   modules/owimetadatabase_soilapi.locations
 
 Indices and tables
 ==================
