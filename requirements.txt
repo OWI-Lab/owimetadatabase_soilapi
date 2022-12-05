@@ -7,3 +7,4 @@ plotly
 groundhog
 matplotlib
 pyproj
+scipy
