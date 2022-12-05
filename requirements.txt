@@ -1,3 +1,6 @@
 sphinx>=1.4
 ipykernel
 nbsphinx
+numpy
+pandas
+plotly
